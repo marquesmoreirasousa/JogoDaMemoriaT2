@@ -30,16 +30,22 @@ namespace Matriz2024
             int[,] tela = new int[4, 4];
             int[,] jogo = new int[4, 4];
             int acertos = 0;
-            Player p1 = new Player("Marques");
-            Player p2 = new Player("Alfredo");
+            Player p1;
+            Player p2;
 
-            Console.WriteLine(p1.ToString());
-            Console.WriteLine(p2.ToString());
+            Console.WriteLine("Entre com o nome do P1:");
+            string nameP1 = Console.ReadLine();
+            Console.WriteLine("Entre com o nome do P2:");
+            string nameP2 = Console.ReadLine();
+
+            p1 = new Player(nameP1);
+            p2 = new Player(nameP2);
+
+            
 
 
             Random gerador = new Random();
-            DateTime inicio = DateTime.Now;
-
+            
             int lin, col;
             //Vamos gerar os pares de números e adicionar
             //na matriz jogo
@@ -56,10 +62,24 @@ namespace Matriz2024
                     jogo[lin, col] = i;
                 }
             }
-
+            //Sortear jogador que começa
+            int jogador = gerador.Next(1, 3);
+            Program.PrintMatrix(jogo);
             Console.WriteLine();
             do
             {
+                //Imprimir o nome do jogador da vez.
+                //if(jogador == 1)
+                //    Console.WriteLine(p1.Name);
+                //else
+                //    Console.WriteLine(p2.Name);
+
+                Console.WriteLine("{0} É A SUA VEZ!",
+                    jogador == 1? p1.Name: p2.Name);
+
+                //Começa a contar o tempo.
+                DateTime begin = DateTime.Now;
+
                 //Imprimir conteúdo da matriz tela
                 Program.PrintMatrix(tela);
 
@@ -151,24 +171,43 @@ namespace Matriz2024
 
                 if (tela[lin1, col1] == tela[lin2, col2])
                 {
+                    if (jogador == 1)
+                        p1.Score = 1;
+                    else
+                        p2.Score = 1;
+
                     acertos++;
                 }
                 else //Caso não tenha acertado o par
                 {
+                    TimeSpan timeSpan = DateTime.Now - begin;
+
+                    //Soma do tempo de partida.
+                    if(jogador == 1)
+                        p1.GameTime = timeSpan;
+                    else
+                        p2.GameTime = timeSpan;
+
+                    //Inversão dos jogadores
+                    jogador = jogador % 2 + 1;
+
                     tela[lin1, col1] = 0;
                     tela[lin2, col2] = 0;
                 }
-                Console.WriteLine("Digite 0 para sair ou outro número para continuar:");
-                int valor = int.Parse(Console.ReadLine());
+                //Console.WriteLine("Digite 0 para sair ou outro número para continuar:");
+                //int valor = int.Parse(Console.ReadLine());
 
-                if (valor == 0)
-                    break;
+                //if (valor == 0)
+                //    break;
 
+                Console.WriteLine(p1.ToString());
+                Console.WriteLine(p2.ToString());
             } while (acertos < 8);
 
+            
 
-            TimeSpan timeSpan = DateTime.Now - inicio;
-            Console.WriteLine($"Tempo total de jogo: {timeSpan.ToString(@"hh\:mm\:ss")}");
+
+            //Console.WriteLine($"Tempo total de jogo: {timeSpan.ToString(@"hh\:mm\:ss")}");
 
         }
     }

@@ -51,7 +51,7 @@ namespace Matriz2024
         {
             return "Nome: " + Name +
             "\nPontuação: " + Score +
-            "\nTempo de Partida: " + GameTime;
+            $"\nTempo de Partida: {GameTime:hh\\:mm\\:ss}" ;
         }
     }
 }
